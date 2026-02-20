@@ -1,0 +1,33 @@
+# X11 libraries
+ac_cv_lib_Xext_XShmCreateImage=yes
+ac_cv_lib_ICE_IceSetIOErrorHandler=yes
+ac_cv_lib_SM_SmsSetErrorHandler=yes
+ac_cv_lib_Xt_XtDisplay=yes
+ac_cv_lib_Xi_XOpenDevice=yes
+ac_cv_lib_Xmu_XmuSimpleErrorHandler=yes
+ac_cv_lib_Xxf86vm_XF86VidModeSetViewPort=yes
+ac_cv_lib_Xrender_XRenderSetSubpixelOrder=yes
+ac_cv_lib_Xrandr_XRRQueryVersion=yes
+
+# Audio libraries
+ac_cv_lib_openal_alEnable=yes
+ac_cv_lib_vorbisfile_ov_fopen=yes
+
+# System libraries
+ac_cv_func_dlopen=yes
+ac_cv_lib_z_crc32=yes
+ac_cv_lib_png_png_init_io=yes
+
+# Graphics libraries
+ac_cv_lib_GL_glGetString=yes
+ac_cv_lib_GLU_gluOrtho2D=yes
+ac_cv_lib_glut_glutSwapBuffers=yes
+
+# PLIB libraries
+ac_cv_lib_plibul_main=yes
+ac_cv_lib_plibsg_main=yes
+ac_cv_lib_plibsl_main=yes
+ac_cv_lib_plibsm_main=yes
+ac_cv_lib_plibssg_main=yes
+ac_cv_lib_plibssgaux_main=yes
+ac_cv_lib_plibjs_main=yes
