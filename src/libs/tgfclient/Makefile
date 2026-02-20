@@ -36,7 +36,9 @@ SOURCES   = 	guimenu.cpp \
 		control.cpp \
 		fg_gm.cpp \
 		tgfclient.cpp \
-		glfeatures.cpp
+		glfeatures.cpp \
+		glut_stubs.cpp \
+		gl_stubs.c
 
 
 EXPDIR  = include

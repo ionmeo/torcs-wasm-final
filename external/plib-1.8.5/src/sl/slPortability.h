@@ -51,7 +51,7 @@
 #include <limits.h>
 #include <math.h>
 
-#if (defined(UL_LINUX) || defined(UL_BSD)) && !defined(__NetBSD__)
+#if (defined(UL_LINUX) || defined(UL_BSD)) && !defined(__NetBSD__) && !defined(UL_EMSCRIPTEN)
 #define SL_USING_OSS_AUDIO 1
 #endif
 

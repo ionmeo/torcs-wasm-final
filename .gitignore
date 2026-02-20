@@ -36,3 +36,10 @@ src/libs/txml/gennmtab/gennmtab.wasm
 # PLIB build artifacts
 external/plib-1.8.5/**/Makefile
 external/plib-1.8.5/**/.deps/
+
+src/linux/torcs-bin.wasm
+src/tools/accc/accc-bin.wasm
+src/tools/nfs2ac/nfs2ac-bin.wasm
+src/tools/nfsperf/nfsperf-bin.wasm
+src/tools/texmapper/texmapper-bin.wasm
+src/tools/trackgen/trackgen-bin.wasm

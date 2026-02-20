@@ -797,12 +797,12 @@ namespace olethros {
             TqAtMaxRevs,
             0.0
 	};
-	float a [] = {		
-            0.0,
+	float a [] = {
+            0.0f,
             rpmMaxTq,
             rpmMaxPw,
             rpmMax,
-            rpmMax*2.0
+            rpmMax*2.0f
 	};
 	int N = 5;
 	for (int i=0; i<N - 1; i++) {

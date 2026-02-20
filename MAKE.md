@@ -352,3 +352,238 @@ LDFLAGS = -L${EXPORTBASE}/lib $(filter-out -lvorbisfile,@LDFLAGS@) -L/usr/lib -s
 
 This resolves many of the undefined symbols, leaving only functions that the legacy emulation does not support (display lists, selection/picking, pixel operations, etc.).
 
+### Unsupported OpenGL Functions
+
+To see all remaining undefined symbols, temporarily add `--error-limit=0` to `LDFLAGS` in `emscripten-env.sh`:
+
+```bash
+export LDFLAGS="-Wl,--error-limit=0"
+```
+
+After running `make`, the following undefined symbols remain:
+
+```
+wasm-ld: error: undefined symbol: glDeleteLists
+wasm-ld: error: undefined symbol: glColorMaterial
+wasm-ld: error: undefined symbol: glMaterialf
+wasm-ld: error: undefined symbol: glCallList
+wasm-ld: error: undefined symbol: glPushName
+wasm-ld: error: undefined symbol: glLoadName
+wasm-ld: error: undefined symbol: glPopName
+wasm-ld: error: undefined symbol: glPushAttrib
+wasm-ld: error: undefined symbol: glPopAttrib
+wasm-ld: error: undefined symbol: glPushClientAttrib
+wasm-ld: error: undefined symbol: glPopClientAttrib
+wasm-ld: error: undefined symbol: glArrayElement
+wasm-ld: error: undefined symbol: glRasterPos2i
+wasm-ld: error: undefined symbol: glPixelZoom
+wasm-ld: error: undefined symbol: glDrawPixels
+wasm-ld: error: undefined symbol: glLightf
+```
+
+These are OpenGL 1.x functions that Emscripten's legacy GL emulation does not support:
+
+- `glDeleteLists`, `glCallList` - Display lists (pre-compiled command sequences)
+- `glPushName`, `glLoadName`, `glPopName` - Selection/picking (identifying objects under cursor)
+- `glPushAttrib`, `glPopAttrib`, `glPushClientAttrib`, `glPopClientAttrib` - State stack operations
+- `glRasterPos2i`, `glPixelZoom`, `glDrawPixels` - Pixel operations (direct framebuffer access)
+- `glArrayElement` - Indexed vertex array access
+- `glColorMaterial`, `glMaterialf`, `glLightf` - Fixed-function lighting
+
+To fix this, create stub implementations in `src/libs/tgfclient/gl_stubs.c`:
+
+```c
+#ifdef __EMSCRIPTEN__
+
+#include <GL/gl.h>
+
+void glDeleteLists(GLuint list, GLsizei range) {}
+void glCallList(GLuint list) {}
+void glPushName(GLuint name) {}
+void glLoadName(GLuint name) {}
+void glPopName(void) {}
+void glPushAttrib(GLbitfield mask) {}
+void glPopAttrib(void) {}
+void glPushClientAttrib(GLbitfield mask) {}
+void glPopClientAttrib(void) {}
+void glRasterPos2i(GLint x, GLint y) {}
+void glPixelZoom(GLfloat xfactor, GLfloat yfactor) {}
+void glDrawPixels(GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels) {}
+void glArrayElement(GLint i) {}
+void glColorMaterial(GLenum face, GLenum mode) {}
+void glMaterialf(GLenum face, GLenum pname, GLfloat param) {}
+void glLightf(GLenum light, GLenum pname, GLfloat param) {}
+
+#endif
+```
+
+### Unsupported GLUT Functions
+
+The following GLUT functions are also undefined:
+
+```
+wasm-ld: error: undefined symbol: glutInitDisplayString
+wasm-ld: error: undefined symbol: glutGameModeString
+wasm-ld: error: undefined symbol: glutGameModeGet
+wasm-ld: error: undefined symbol: glutEnterGameMode
+wasm-ld: error: undefined symbol: glutLeaveGameMode
+wasm-ld: error: undefined symbol: glutExtensionSupported
+wasm-ld: error: undefined symbol: glutWarpPointer
+```
+
+These are FreeGLUT extensions not available in Emscripten's GLUT implementation:
+
+- `glutGameModeString`, `glutEnterGameMode`, `glutLeaveGameMode`, `glutGameModeGet` - Fullscreen game mode
+- `glutInitDisplayString` - Advanced display configuration
+- `glutExtensionSupported` - OpenGL extension queries
+- `glutWarpPointer` - Mouse cursor repositioning
+
+Create stub implementations in `src/libs/tgfclient/glut_stubs.cpp`:
+
+```cpp
+#ifdef __EMSCRIPTEN__
+
+#include <GL/glut.h>
+
+void glutGameModeString(const char *string) {}
+
+int glutEnterGameMode(void) {
+    return 0;
+}
+
+void glutLeaveGameMode(void) {}
+
+int glutGameModeGet(GLenum mode) {
+    switch (mode) {
+    case GLUT_GAME_MODE_ACTIVE:
+        return 0;
+    case GLUT_GAME_MODE_POSSIBLE:
+        return 0;
+    case GLUT_GAME_MODE_DISPLAY_CHANGED:
+        return 0;
+    default:
+        return 0;
+    }
+}
+
+void glutInitDisplayString(const char *string) {}
+
+int glutExtensionSupported(const char *name) {
+    return 0;
+}
+
+void glutWarpPointer(int x, int y) {}
+
+#endif
+```
+
+Add both stub files to `src/libs/tgfclient/Makefile`:
+
+```makefile
+SOURCES = guimenu.cpp \
+    ...
+    glfeatures.cpp \
+    glut_stubs.cpp \
+    gl_stubs.c
+```
+
+### SOLID Physics Library `uint` Type
+
+`src/modules/simu/simuv2/SOLID-2.0/src/C-api.cpp` uses the non-standard `uint` type:
+
+```
+C-api.cpp:128:11: error: use of undeclared identifier 'uint'
+  128 |   while ((uint)i < pointBuf.size() && !(pointBuf[i] == p)) ++i;
+```
+
+The file already has a typedef for Win32:
+
+```c
+#ifdef WIN32
+#define uint unsigned int
+#endif
+```
+
+Add `__EMSCRIPTEN__` to the guard:
+
+```c
+#if defined(WIN32) || defined(__EMSCRIPTEN__)
+#define uint unsigned int
+#endif
+```
+
+### OSS Audio in PLIB
+
+`external/plib-1.8.5/src/sl/slPortability.h` enables OSS (Open Sound System) audio for Linux and BSD:
+
+```c
+#if (defined(UL_LINUX) || defined(UL_BSD)) && !defined(__NetBSD__)
+#define SL_USING_OSS_AUDIO 1
+#endif
+```
+
+When `SL_USING_OSS_AUDIO` is defined, `sl.h` includes `<soundcard.h>`:
+
+```c
+#ifdef SL_USING_OSS_AUDIO
+#  if defined(__linux__)
+#    include <soundcard.h>
+```
+
+Emscripten defines `__unix__` which triggers the `UL_BSD` fallback (see PLIB-BUILD.md), causing:
+
+```
+slPortability.h:73:14: fatal error: 'soundcard.h' file not found
+   73 | #    include <soundcard.h>
+```
+
+OSS is a Linux/BSD kernel audio interface that doesn't exist in browsers. To fix this, exclude Emscripten from the OSS audio path in `slPortability.h`:
+
+```c
+#if (defined(UL_LINUX) || defined(UL_BSD)) && !defined(__NetBSD__) && !defined(UL_EMSCRIPTEN)
+#define SL_USING_OSS_AUDIO 1
+#endif
+```
+
+After this change, rebuild and reinstall PLIB:
+
+```bash
+cd external/plib-1.8.5
+make install
+cd ../..
+make
+```
+
+### C++11 Narrowing in Olethros Driver
+
+`src/drivers/olethros/driver.cpp` has a narrowing conversion error:
+
+```
+driver.cpp:805:13: error: non-constant-expression cannot be narrowed from type 'double' to 'float' in initializer list [-Wc++11-narrowing]
+  805 |             rpmMax*2.0
+```
+
+The code initializes a `float` array with `double` expressions:
+
+```c
+float a [] = {
+    0.0,
+    rpmMaxTq,
+    rpmMaxPw,
+    rpmMax,
+    rpmMax*2.0
+};
+```
+
+`2.0` is a `double` literal, making `rpmMax*2.0` a `double`. C++11 disallows implicit narrowing in initializer lists. To fix this, use `float` literals:
+
+```c
+float a [] = {
+    0.0f,
+    rpmMaxTq,
+    rpmMaxPw,
+    rpmMax,
+    rpmMax*2.0f
+};
+```
+
