@@ -207,11 +207,11 @@ to
 #define SL_USING_OSS_AUDIO 1
 #endif
 
-in external/plib-1.8.5/src/sl/slPortability.h
+in external/plib/src/sl/slPortability.h
 
 After this change, run:
 
-cd external/plib-1.8.5
+cd external/plib
 make install
 cd ../..
 make

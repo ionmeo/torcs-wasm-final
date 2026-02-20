@@ -514,7 +514,7 @@ Add `__EMSCRIPTEN__` to the guard:
 
 ### OSS Audio in PLIB
 
-`external/plib-1.8.5/src/sl/slPortability.h` enables OSS (Open Sound System) audio for Linux and BSD:
+`external/plib/src/sl/slPortability.h` enables OSS (Open Sound System) audio for Linux and BSD:
 
 ```c
 #if (defined(UL_LINUX) || defined(UL_BSD)) && !defined(__NetBSD__)
@@ -548,7 +548,7 @@ OSS is a Linux/BSD kernel audio interface that doesn't exist in browsers. To fix
 After this change, rebuild and reinstall PLIB:
 
 ```bash
-cd external/plib-1.8.5
+cd external/plib
 make install
 cd ../..
 make

@@ -34,8 +34,8 @@ stamp-h1
 src/libs/txml/gennmtab/gennmtab.wasm
 
 # PLIB build artifacts
-external/plib-1.8.5/**/Makefile
-external/plib-1.8.5/**/.deps/
+external/plib/**/Makefile
+external/plib/**/.deps/
 
 src/linux/torcs-bin.wasm
 src/tools/accc/accc-bin.wasm

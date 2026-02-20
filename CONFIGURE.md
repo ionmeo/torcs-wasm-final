@@ -76,7 +76,7 @@ Headers often include other headers, so you need to copy all dependency files as
 
 | Dependency | Source | Folder | Headers |
 |------------|--------|--------|---------|
-| plib-1.8.5 | [sourceforge](https://plib.sourceforge.net/download.html) | `plib/` | `js.h`, `sg.h`, `ssg.h`, `ssgaFire.h`, `ssgaLensFlare.h`, `ssgaParticleSystem.h`, `ssgaScreenDump.h`, `ssgaShapes.h`, `ssgAux.h`, `ssgaWaveSystem.h`, `ssgconf.h`, `ul.h` |
+| plib | [sourceforge](https://plib.sourceforge.net/download.html) | `plib/` | `js.h`, `sg.h`, `ssg.h`, `ssgaFire.h`, `ssgaLensFlare.h`, `ssgaParticleSystem.h`, `ssgaScreenDump.h`, `ssgaShapes.h`, `ssgAux.h`, `ssgaWaveSystem.h`, `ssgconf.h`, `ul.h` |
 | freealut | [github](https://github.com/vancegroup/freealut) | `AL/` | `alut.h` |
 
 ### Missing Libraries

@@ -5,7 +5,7 @@ This guide documents how to build PLIB 1.8.5 for WebAssembly using Emscripten on
 ## Usage
 
 ```bash
-cd external/plib-1.8.5
+cd external/plib
 
 source ../../emscripten-env.sh
 
