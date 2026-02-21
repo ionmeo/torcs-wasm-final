@@ -177,7 +177,7 @@ GfuiFontClass::GfuiFontClass(char *FileName)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	//Create texture
-	glTexImage2D(GL_TEXTURE_2D, 0, 2, font->TexWidth,
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, font->TexWidth,
 		 font->TexHeight, 0, GL_LUMINANCE_ALPHA,
 		 GL_UNSIGNED_BYTE, (void *)TexBytes);
 

@@ -43,3 +43,4 @@ src/tools/nfs2ac/nfs2ac-bin.wasm
 src/tools/nfsperf/nfsperf-bin.wasm
 src/tools/texmapper/texmapper-bin.wasm
 src/tools/trackgen/trackgen-bin.wasm
+web/
