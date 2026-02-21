@@ -292,7 +292,7 @@ void cGrScreen::camDraw(tSituation *s)
 	STOP_PROFILE("grDrawCar*");
 	
 	START_PROFILE("grDrawScene*");
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	grDrawScene();
 	STOP_PROFILE("grDrawScene*");
@@ -359,7 +359,7 @@ void cGrScreen::update(tSituation *s, float Fps)
 	dispCam = curCam;
 	camDraw(s);
 	
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);    

@@ -753,7 +753,7 @@ cGrBoard::grDispCounterBoard2(tCarElt *car)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) ;
 	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glBindTexture(GL_TEXTURE_2D, curInst->texture->getTextureHandle());
 	glCallList(curInst->CounterList);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -784,7 +784,7 @@ cGrBoard::grDispCounterBoard2(tCarElt *car)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) ;
 	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glBindTexture(GL_TEXTURE_2D, curInst->texture->getTextureHandle());
 	glCallList(curInst->CounterList);
 	glBindTexture(GL_TEXTURE_2D, 0);

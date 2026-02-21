@@ -183,7 +183,7 @@ GfuiDisplay(void)
 
 		glDisable(GL_BLEND);
 		glEnable(GL_TEXTURE_2D);
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		glColor3f(0.0, 0.0, 1.0);
 		glBindTexture(GL_TEXTURE_2D, GfuiScreen->bgImage);
 		glBegin(GL_QUADS);

@@ -123,7 +123,7 @@ gfuiDrawImage(tGfuiObject *obj)
     image = &(obj->u.image);
 
     glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBindTexture(GL_TEXTURE_2D, image->texture);
 
     glBegin(GL_TRIANGLE_STRIP);

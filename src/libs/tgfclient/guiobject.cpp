@@ -32,7 +32,7 @@ void
 gfuiPrintString(int x, int y, GfuiFontClass *font, const char *string)
 {
     glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.1) ;
     font->output(x, y, string);
@@ -43,7 +43,7 @@ gfuiPrintString(int x, int y, GfuiFontClass *font, const char *string)
 void GfuiPrintString(const char *text, float *fgColor, int font, int x, int y, int align)
 {
 	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.1) ;
 	glColor4fv(fgColor);

@@ -526,7 +526,7 @@ void ssgVtxTableSmoke::draw_geometry ()
     sgVec4 *cl = (sgVec4 *) colours->get(0);
 	alpha =  0.9f - ((float)(cur_life/max_life));
 	glDepthMask(GL_FALSE);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	/*glPolygonOffset(-5.0f, +10.0f);*/
 	/*glEnable(GL_POLYGON_OFFSET_FILL);*/
@@ -618,5 +618,5 @@ void ssgVtxTableSmoke::draw_geometry ()
 
 	glDisable(GL_POLYGON_OFFSET_FILL);
 	glDepthMask(GL_TRUE);
-	glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 }

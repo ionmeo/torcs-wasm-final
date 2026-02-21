@@ -182,3 +182,32 @@ glTexImage2D(GL_TEXTURE_2D, 0, 2, font->TexWidth,
 // After
 glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, font->TexWidth,
 ```
+
+### Fix 2: "Unhandled pname in glTexEnvi" warnings
+
+Emscripten's legacy GL emulation only handles `GL_TEXTURE_ENV_MODE` in `glTexEnvi`, not `glTexEnvi`. Change all `glTexEnvi` calls that set `GL_TEXTURE_ENV_MODE` to use `glTexEnvi`:
+
+Files changed:
+- `src/libs/tgfclient/guifont.cpp`
+- `src/libs/tgfclient/guiobject.cpp`
+- `src/libs/tgfclient/guiimage.cpp`
+- `src/libs/tgfclient/gui.cpp`
+- `src/modules/graphic/ssggraph/grtrackmap.cpp`
+- `src/modules/graphic/ssggraph/grsmoke.cpp`
+- `src/modules/graphic/ssggraph/grscreen.cpp`
+- `src/modules/graphic/ssggraph/grcarlight.cpp`
+- `src/modules/graphic/ssggraph/grboard.cpp`
+
+```cpp
+// Before
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+// After
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+```
+
+**Why:** The param value (`GL_MODULATE`, `GL_REPLACE`) is an integer enum, not a float. Emscripten's `hook_texEnvf` only handles `GL_RGB_SCALE` and `GL_ALPHA_SCALE`, while `hook_texEnvi` handles `GL_TEXTURE_ENV_MODE`.
+
+Need to run `make clean && make` for this change to take effect

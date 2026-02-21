@@ -125,7 +125,7 @@ void ssgVtxTableCarlight::draw_geometry ()
 
 	alpha = 0.75f;
 	glDepthMask(GL_FALSE);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glPolygonOffset(-15.0f, -20.0f);
 	glEnable(GL_POLYGON_OFFSET_FILL);
